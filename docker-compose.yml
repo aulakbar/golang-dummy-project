@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    image: golang:latest
+    container_name: dummy-golang-project
+    working_dir: /app
+    volumes:
+      - .:/app
+    ports:
+      - "8080:8080"
+    command: go run main.go
+    depends_on:
+      - db
+    networks:
+      - myapp-network
+
+  db:
+    image: postgres
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - myapp-network
+
+networks:
+  myapp-network:
